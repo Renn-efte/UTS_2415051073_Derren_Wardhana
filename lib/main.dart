@@ -7,7 +7,7 @@ void main() {
   runApp(
     // Bungkus aplikasi dengan Provider
     ChangeNotifierProvider(
-      create: (context) => RecipeProvider(),
+      create: (context) => RecipeProvider()..fetchRecipes(),
       child: const RecipeBoxApp(),
     ),
   );

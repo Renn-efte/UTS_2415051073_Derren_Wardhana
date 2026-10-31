@@ -1,48 +1,46 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import '../models/saved_recipe.dart';
+import '../services/api_service.dart'; // Import service  baru
 
 class RecipeProvider extends ChangeNotifier {
-  // State variables wajib UTS
+  final ApiService _apiService = ApiService(); // Instansiasi service
+
   List<Recipe> _recipes = [];
   List<SavedRecipe> _savedRecipes = [];
   bool _isLoading = false;
   String _errorMessage = '';
 
-  // Getters agar UI bisa membaca data
   List<Recipe> get recipes => _recipes;
   List<SavedRecipe> get savedRecipes => _savedRecipes;
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  // Kerangka method untuk mengambil data dari API (akan diisi di Tahap 8)
+  // TAHAP 8: Ambil data asli dari API
   Future<void> fetchRecipes() async {
     _isLoading = true;
     _errorMessage = '';
-    notifyListeners(); // Memberitahu UI untuk menampilkan loading screen
+    notifyListeners(); // Tampilkan loading UI
 
     try {
-      // TODO: Ambil data dari REST API TheMealDB
-      await Future.delayed(const Duration(seconds: 1)); // Simulasi loading sementara
+      _recipes = await _apiService.fetchRecipes();
     } catch (e) {
-      _errorMessage = 'Gagal memuat resep: ${e.toString()}';
+      _errorMessage = e.toString(); // Tampilkan error UI
     } finally {
       _isLoading = false;
-      notifyListeners(); // Memberitahu UI bahwa proses selesai
+      notifyListeners(); // Sembunyikan loading UI
     }
   }
 
-  // Kerangka method untuk mengambil data dari Supabase (akan diisi di Tahap 9)
+  // (Biarkan fetchSavedRecipes seperti sebelumnya untuk Tahap 9)
   Future<void> fetchSavedRecipes() async {
     _isLoading = true;
     _errorMessage = '';
     notifyListeners();
-
     try {
-      // TODO: Ambil data dari Supabase
       await Future.delayed(const Duration(seconds: 1));
     } catch (e) {
-      _errorMessage = 'Gagal memuat kotak resep: ${e.toString()}';
+      _errorMessage = e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();
