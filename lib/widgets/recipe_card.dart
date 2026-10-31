@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/recipe_detail_page.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
@@ -30,7 +31,15 @@ class RecipeCard extends StatelessWidget {
         subtitle: Text(category),
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
-          // TODO: Navigasi ke Detail
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipeDetailPage(
+                title: title,
+                category: category,
+              ),
+            ),
+          );
         },
       ),
     );
