@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Tambahkan import ini
+import 'providers/recipe_provider.dart'; // Tambahkan import ini
 import 'screens/main_screen.dart';
 
 void main() {
-  runApp(const RecipeBoxApp());
+  runApp(
+    // Bungkus aplikasi dengan Provider
+    ChangeNotifierProvider(
+      create: (context) => RecipeProvider(),
+      child: const RecipeBoxApp(),
+    ),
+  );
 }
 
 class RecipeBoxApp extends StatelessWidget {
