@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class RecipeDetailPage extends StatelessWidget {
   final String title;
   final String category;
+  final String imageUrl; // Tambahkan ini
 
   const RecipeDetailPage({
     super.key,
     required this.title,
     required this.category,
+    required this.imageUrl, // Tambahkan ini
   });
 
   @override
@@ -22,14 +24,20 @@ class RecipeDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.orange.shade100,
-                borderRadius: BorderRadius.circular(12),
+            // Ubah bagian Container ini menjadi gambar asli
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                imageUrl,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  height: 200,
+                  color: Colors.orange.shade100,
+                  child: const Icon(Icons.fastfood, size: 80, color: Colors.deepOrange),
+                ),
               ),
-              child: const Icon(Icons.fastfood, size: 80, color: Colors.deepOrange),
             ),
             const SizedBox(height: 16),
             Text('Kategori: $category', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),

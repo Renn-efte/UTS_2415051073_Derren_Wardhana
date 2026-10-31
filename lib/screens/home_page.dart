@@ -45,8 +45,9 @@ class HomePage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final recipe = provider.recipes[index];
                     return RecipeCard(
-                      title: recipe.strMeal, // Judul asli dari API
-                      category: 'Seafood', 
+                      title: recipe.strMeal, 
+                      category: 'Seafood',
+                      imageUrl: recipe.strMealThumb, // Tambahkan ini
                     );
                   },
                 );
@@ -58,8 +59,9 @@ class HomePage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final recipe = provider.recipes[index];
                     return RecipeCard(
-                      title: recipe.strMeal, // Judul asli dari API
+                      title: recipe.strMeal, 
                       category: 'Seafood',
+                      imageUrl: recipe.strMealThumb, // Tambahkan ini
                     );
                   },
                 );
