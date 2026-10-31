@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import '../screens/recipe_detail_page.dart';
 
 class RecipeCard extends StatelessWidget {
+  final String mealId;
   final String title;
   final String category;
-  final String imageUrl; // Tambahkan ini
+  final String imageUrl;
 
   const RecipeCard({
-    super.key, 
+    super.key,
+    required this.mealId,
     required this.title, 
     required this.category,
-    required this.imageUrl, // Tambahkan ini
+    required this.imageUrl,
   });
 
   @override
@@ -41,9 +43,10 @@ class RecipeCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => RecipeDetailPage(
+                mealId: mealId,
                 title: title,
                 category: category,
-                imageUrl: imageUrl, // Lempar gambar ke detail
+                imageUrl: imageUrl,
               ),
             ),
           );

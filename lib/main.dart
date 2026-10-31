@@ -7,8 +7,6 @@ import 'screens/main_screen.dart';
 void main() async {
   // Wajib ditambahkan agar Supabase jalan sebelum UI dirender
   WidgetsFlutterBinding.ensureInitialized();
-
-  // TODO: Ganti dengan URL dan Anon Key project RecipeBox Bli
   await Supabase.initialize(
     url: 'https://kqzmwlfimejhrpvedjhu.supabase.co', 
     publishableKey: 'sb_publishable_XCDc417zqS_XaFgyTxmAwA_C-wUBiPs', 
@@ -16,7 +14,9 @@ void main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (context) => RecipeProvider()..fetchRecipes(),
+      create: (context) => RecipeProvider()
+        ..fetchRecipes()
+        ..fetchSavedRecipes(), // Tambahkan baris ini
       child: const RecipeBoxApp(),
     ),
   );

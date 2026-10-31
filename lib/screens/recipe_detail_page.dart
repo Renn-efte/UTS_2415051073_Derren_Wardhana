@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'recipe_form_page.dart';
 
 class RecipeDetailPage extends StatelessWidget {
+  final String mealId;
   final String title;
   final String category;
-  final String imageUrl; // Tambahkan ini
+  final String imageUrl;
 
   const RecipeDetailPage({
     super.key,
+    required this.mealId,
     required this.title,
     required this.category,
-    required this.imageUrl, // Tambahkan ini
+    required this.imageUrl,
   });
 
   @override
@@ -24,7 +27,6 @@ class RecipeDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Ubah bagian Container ini menjadi gambar asli
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
@@ -48,7 +50,15 @@ class RecipeDetailPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO: Buka Form Create untuk simpan ke Supabase
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipeFormPage(
+                mealName: title, 
+                mealId: mealId,
+              ),
+            ),
+          );
         },
         icon: const Icon(Icons.bookmark_add),
         label: const Text('Simpan'),
