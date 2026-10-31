@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // Tambahkan import ini
-import 'providers/recipe_provider.dart'; // Tambahkan import ini
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'; // Wajib import ini
+import 'providers/recipe_provider.dart';
 import 'screens/main_screen.dart';
 
-void main() {
+void main() async {
+  // Wajib ditambahkan agar Supabase jalan sebelum UI dirender
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // TODO: Ganti dengan URL dan Anon Key project RecipeBox Bli
+  await Supabase.initialize(
+    url: 'https://kqzmwlfimejhrpvedjhu.supabase.co', 
+    publishableKey: 'sb_publishable_XCDc417zqS_XaFgyTxmAwA_C-wUBiPs', 
+  );
+
   runApp(
-    // Bungkus aplikasi dengan Provider
     ChangeNotifierProvider(
       create: (context) => RecipeProvider()..fetchRecipes(),
       child: const RecipeBoxApp(),

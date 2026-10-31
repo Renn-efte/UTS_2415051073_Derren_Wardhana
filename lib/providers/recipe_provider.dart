@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import '../models/saved_recipe.dart';
-import '../services/api_service.dart'; // Import service  baru
+import '../services/api_service.dart';
+import '../services/supabase_service.dart'; // Import service baru
 
 class RecipeProvider extends ChangeNotifier {
-  final ApiService _apiService = ApiService(); // Instansiasi service
+  final ApiService _apiService = ApiService();
+  final SupabaseService _dbService = SupabaseService(); // Daftarkan service Supabase
 
   List<Recipe> _recipes = [];
   List<SavedRecipe> _savedRecipes = [];
@@ -16,31 +18,29 @@ class RecipeProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  // TAHAP 8: Ambil data asli dari API
   Future<void> fetchRecipes() async {
     _isLoading = true;
     _errorMessage = '';
-    notifyListeners(); // Tampilkan loading UI
-
+    notifyListeners();
     try {
       _recipes = await _apiService.fetchRecipes();
     } catch (e) {
-      _errorMessage = e.toString(); // Tampilkan error UI
+      _errorMessage = e.toString();
     } finally {
       _isLoading = false;
-      notifyListeners(); // Sembunyikan loading UI
+      notifyListeners();
     }
   }
 
-  // (Biarkan fetchSavedRecipes seperti sebelumnya untuk Tahap 9)
+  // TAHAP 9: Fungsi menarik data database yang sebenarnya
   Future<void> fetchSavedRecipes() async {
     _isLoading = true;
     _errorMessage = '';
     notifyListeners();
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      _savedRecipes = await _dbService.getSavedRecipes();
     } catch (e) {
-      _errorMessage = e.toString();
+      _errorMessage = 'Gagal memuat kotak resep: ${e.toString()}';
     } finally {
       _isLoading = false;
       notifyListeners();
