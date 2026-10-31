@@ -30,7 +30,7 @@ class SavedRecipe {
   // Mengubah objek Dart menjadi JSON untuk dikirim (INSERT/UPDATE) ke Supabase
   Map<String, dynamic> toJson() {
     return {
-      if (id != null) 'id': id,
+      // Baris id kita hapus karena dilarang diubah secara manual
       'meal_id': mealId,
       'meal_name': mealName,
       'status': status,

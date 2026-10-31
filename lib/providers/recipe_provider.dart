@@ -63,4 +63,21 @@ class RecipeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // TAHAP 11: Proses update data dengan state management
+  Future<bool> updateRecipe(SavedRecipe recipe) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _dbService.updateRecipe(recipe);
+      await fetchSavedRecipes(); // Refresh daftar otomatis
+      return true; 
+    } catch (e) {
+      _errorMessage = 'Gagal mengupdate resep: ${e.toString()}';
+      return false; 
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

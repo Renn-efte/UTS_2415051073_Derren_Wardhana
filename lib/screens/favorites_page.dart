@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/recipe_provider.dart';
+import 'recipe_form_page.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
@@ -44,7 +45,17 @@ class FavoritesPage extends StatelessWidget {
                       IconButton(
                         icon: const Icon(Icons.edit, color: Colors.blue),
                         onPressed: () {
-                          // TODO: Fitur Update (Tahap 11)
+                          // Buka form dengan melempar data existingRecipe
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RecipeFormPage(
+                                mealName: saved.mealName,
+                                mealId: saved.mealId,
+                                existingRecipe: saved, // Ini kuncinya!
+                              ),
+                            ),
+                          );
                         },
                       ),
                       IconButton(
