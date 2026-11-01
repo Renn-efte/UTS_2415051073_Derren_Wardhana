@@ -58,10 +58,37 @@ class FavoritesPage extends StatelessWidget {
                           );
                         },
                       ),
-                      IconButton(
+                     IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () {
-                          // TODO: Fitur Delete (Tahap 12)
+                          // Tampilkan dialog konfirmasi sebelum menghapus
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text('Hapus Resep'),
+                              content: Text('Yakin ingin menghapus ${saved.mealName} dari My Box?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx), // Tutup dialog
+                                  child: const Text('Batal'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    Navigator.pop(ctx); // Tutup dialog dulu
+                                    // Panggil fungsi delete dari Provider
+                                    final success = await context.read<RecipeProvider>().deleteRecipe(saved.id!);
+                                    
+                                    if (success && context.mounted) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Resep berhasil dihapus!'), backgroundColor: Colors.red),
+                                      );
+                                    }
+                                  },
+                                  child: const Text('Hapus', style: TextStyle(color: Colors.red)),
+                                ),
+                              ],
+                            ),
+                          );
                         },
                       ),
                     ],

@@ -80,4 +80,21 @@ class RecipeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // TAHAP 12: Proses hapus data dengan state management
+  Future<bool> deleteRecipe(int id) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _dbService.deleteRecipe(id);
+      await fetchSavedRecipes(); // Refresh daftar otomatis setelah dihapus
+      return true; 
+    } catch (e) {
+      _errorMessage = 'Gagal menghapus resep: ${e.toString()}';
+      return false; 
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

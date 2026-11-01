@@ -21,4 +21,12 @@ class SupabaseService {
         .update(recipe.toJson())
         .eq('id', recipe.id!); // Cari baris yang ID-nya cocok lalu update
   }
+
+  // TAHAP 12: Fungsi DELETE data
+  Future<void> deleteRecipe(int id) async {
+    await _supabase
+        .from('saved_recipes')
+        .delete()
+        .eq('id', id); // Hapus baris yang ID-nya cocok
+  }
 }
