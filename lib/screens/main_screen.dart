@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'favorites_page.dart';
+import 'profile_page.dart'; // Import screen ke-6
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -11,21 +12,24 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _pages = [
+  
+  final List<Widget> _screens = [
     const HomePage(),
     const FavoritesPage(),
+    const ProfilePage(), // Tambahkan Profile
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.restaurant_menu), label: 'Recipes'),
           BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'My Box'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'), // Icon Profile
         ],
       ),
     );

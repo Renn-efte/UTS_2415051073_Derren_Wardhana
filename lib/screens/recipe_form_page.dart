@@ -85,7 +85,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _status,
+                initialValue: _status,
                 decoration: const InputDecoration(labelText: 'Status Masak', border: OutlineInputBorder()),
                 items: ['Plan to Cook', 'Cooked'].map((String value) {
                   return DropdownMenuItem<String>(value: value, child: Text(value));

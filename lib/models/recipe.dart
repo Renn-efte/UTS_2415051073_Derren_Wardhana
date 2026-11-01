@@ -1,23 +1,22 @@
 class Recipe {
   final String idMeal;
   final String strMeal;
-  final String strCategory;
-  final String strMealThumb; // URL gambar resep
+  final String strMealThumb;
+  final String? strCategory; // Tambahan untuk kategori dinamis
 
   Recipe({
     required this.idMeal,
     required this.strMeal,
-    required this.strCategory,
     required this.strMealThumb,
+    this.strCategory,
   });
 
-  // Factory untuk memetakan JSON API ke objek Dart
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
       idMeal: json['idMeal'] ?? '',
       strMeal: json['strMeal'] ?? '',
-      strCategory: json['strCategory'] ?? '',
       strMealThumb: json['strMealThumb'] ?? '',
+      strCategory: json['strCategory'], 
     );
   }
 }

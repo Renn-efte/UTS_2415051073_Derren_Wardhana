@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/recipe_provider.dart';
 import 'recipe_form_page.dart';
+import 'recipe_detail_page.dart'; // Tambahan import untuk membuka detail
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
@@ -19,7 +20,6 @@ class FavoritesPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           
-          // TAHAP 14: Error Handling UI untuk Supabase
           if (provider.errorMessage.isNotEmpty && provider.savedRecipes.isEmpty) {
             return Center(
               child: Column(
@@ -63,6 +63,20 @@ class FavoritesPage extends StatelessWidget {
                   elevation: 2,
                   margin: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 4.0),
                   child: ListTile(
+                    // FUNGSI BARU: Klik kartu untuk membuka halaman detail
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecipeDetailPage(
+                            mealId: saved.mealId,
+                            title: saved.mealName,
+                            category: 'Tersimpan', // Teks default karena tidak ada di DB
+                            imageUrl: '', // Dikosongkan untuk memicu ikon default
+                          ),
+                        ),
+                      );
+                    },
                     title: Text(saved.mealName, style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text('Status: ${saved.status} | Rating: ${saved.rating}/5\nCatatan: ${saved.note}'),
                     isThreeLine: true,
