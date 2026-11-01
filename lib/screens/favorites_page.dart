@@ -15,20 +15,43 @@ class FavoritesPage extends StatelessWidget {
       ),
       body: Consumer<RecipeProvider>(
         builder: (context, provider, child) {
-          // Trik Interaksi: Loading tengah hanya saat pertama kali buka
           if (provider.isLoading && provider.savedRecipes.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
+          
+          // TAHAP 14: Error Handling UI untuk Supabase
           if (provider.errorMessage.isNotEmpty && provider.savedRecipes.isEmpty) {
-            return Center(child: Text(provider.errorMessage, style: const TextStyle(color: Colors.red)));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 60),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Text(
+                      'Ada masalah koneksi:\n${provider.errorMessage}', 
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red, fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () => provider.fetchSavedRecipes(),
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Muat Ulang'),
+                  ),
+                ],
+              ),
+            );
           }
+
           if (provider.savedRecipes.isEmpty) {
             return const Center(
               child: Text('Belum ada resep yang disimpan.', style: TextStyle(fontSize: 16)),
             );
           }
 
-          // TAHAP 13: Tambahkan interaksi Pull-to-Refresh ke Supabase
           return RefreshIndicator(
             onRefresh: () => provider.fetchSavedRecipes(),
             child: ListView.builder(

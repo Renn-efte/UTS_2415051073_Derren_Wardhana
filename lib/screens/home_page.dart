@@ -15,18 +15,41 @@ class HomePage extends StatelessWidget {
       ),
       body: Consumer<RecipeProvider>(
         builder: (context, provider, child) {
-          // Trik Interaksi: Hanya tampilkan loading tengah jika data benar-benar kosong
           if (provider.isLoading && provider.recipes.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
+          
+          // TAHAP 14: Tampilan Error Handling yang lebih profesional dengan tombol Retry
           if (provider.errorMessage.isNotEmpty && provider.recipes.isEmpty) {
-            return Center(child: Text(provider.errorMessage, style: const TextStyle(color: Colors.red)));
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.wifi_off, color: Colors.red, size: 60),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Text(
+                      'Gagal memuat data:\n${provider.errorMessage}', 
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red, fontSize: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () => provider.fetchRecipes(),
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Coba Lagi'),
+                  ),
+                ],
+              ),
+            );
           }
+
           if (provider.recipes.isEmpty) {
             return const Center(child: Text('Tidak ada resep ditemukan.'));
           }
 
-          // TAHAP 13: Tambahkan interaksi Pull-to-Refresh
           return RefreshIndicator(
             onRefresh: () => provider.fetchRecipes(),
             child: LayoutBuilder(
