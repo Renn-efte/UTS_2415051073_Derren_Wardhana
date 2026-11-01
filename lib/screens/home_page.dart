@@ -15,54 +15,59 @@ class HomePage extends StatelessWidget {
       ),
       body: Consumer<RecipeProvider>(
         builder: (context, provider, child) {
-          if (provider.isLoading) {
+          // Trik Interaksi: Hanya tampilkan loading tengah jika data benar-benar kosong
+          if (provider.isLoading && provider.recipes.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (provider.errorMessage.isNotEmpty) {
+          if (provider.errorMessage.isNotEmpty && provider.recipes.isEmpty) {
             return Center(child: Text(provider.errorMessage, style: const TextStyle(color: Colors.red)));
           }
           if (provider.recipes.isEmpty) {
             return const Center(child: Text('Tidak ada resep ditemukan.'));
           }
 
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 600) {
-                return GridView.builder(
-                  padding: const EdgeInsets.all(16.0),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  itemCount: provider.recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = provider.recipes[index];
-                    return RecipeCard(
-                      mealId: recipe.idMeal,
-                      title: recipe.strMeal,
-                      category: 'Seafood',
-                      imageUrl: recipe.strMealThumb,
-                    );
-                  },
-                );
-              } else {
-                return ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: provider.recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = provider.recipes[index];
-                    return RecipeCard(
-                      mealId: recipe.idMeal,
-                      title: recipe.strMeal,
-                      category: 'Seafood',
-                      imageUrl: recipe.strMealThumb,
-                    );
-                  },
-                );
-              }
-            },
+          // TAHAP 13: Tambahkan interaksi Pull-to-Refresh
+          return RefreshIndicator(
+            onRefresh: () => provider.fetchRecipes(),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(16.0),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 3,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: provider.recipes.length,
+                    itemBuilder: (context, index) {
+                      final recipe = provider.recipes[index];
+                      return RecipeCard(
+                        mealId: recipe.idMeal,
+                        title: recipe.strMeal,
+                        category: 'Seafood',
+                        imageUrl: recipe.strMealThumb,
+                      );
+                    },
+                  );
+                } else {
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: provider.recipes.length,
+                    itemBuilder: (context, index) {
+                      final recipe = provider.recipes[index];
+                      return RecipeCard(
+                        mealId: recipe.idMeal,
+                        title: recipe.strMeal,
+                        category: 'Seafood',
+                        imageUrl: recipe.strMealThumb,
+                      );
+                    },
+                  );
+                }
+              },
+            ),
           );
         },
       ),
