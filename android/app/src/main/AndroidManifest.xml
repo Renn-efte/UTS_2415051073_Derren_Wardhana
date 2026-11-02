@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!-- TAHAP FINAL: Tambahkan izin internet di sini -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="uts_2415051073_derren_wardhana"
         android:name="${applicationName}"
